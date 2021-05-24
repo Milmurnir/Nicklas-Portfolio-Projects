@@ -35,7 +35,19 @@ chunkVertices(Quads,4)
 
 			Vector2i tilePosition = Vector2i(x, y);
 
-			Tile* chunkTile = new Tile(tilePosition, TileSize);
+			Color color;
+
+			if(chunkPosition.x % 2)
+			{
+				color = Color::Red;
+			}
+
+			else
+			{
+				color = Color::Blue;
+			}
+
+			Tile* chunkTile = new Tile(tilePosition, TileSize,color,o);
 
 			tiles[(i * chunkSize) + o] = chunkTile;
 

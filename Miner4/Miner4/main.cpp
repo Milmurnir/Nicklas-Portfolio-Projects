@@ -1,4 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include <thread>
+#include <functional>
+#include <ctime>
 
 #include "TerrainManager.h"
 #include "TimeManager.h"
@@ -6,10 +9,17 @@
 #include "Renderer.h"
 
 
+
+using namespace std;
 using namespace sf;
+
+void UpdateTerrain(TerrainManager& TerrainManager, bool& Playing);
+
 
 int main()
 {
+	bool playing = true;
+
 	Event event;
 
 	TimeManager timeManager;
@@ -20,39 +30,50 @@ int main()
 
 	Renderer renderer(terrainManager);
 
+	thread terrainThread(UpdateTerrain, ref(terrainManager),ref(playing));
+	terrainThread.detach();
 
-
-	while (renderer.GetDisplay()->isOpen())
+	while (playing)
 	{
 		timeManager.StartTimer();
 
 		player.Update();
 
-		terrainManager.Update();
+		//terrainManager.Update();
 
 		renderer.Render(player.GetPosition());
 
 		timeManager.PrintFPS();
 		
-		bool closed = false;
 		while(renderer.GetDisplay()->pollEvent(event))
 		{
 			if(event.type == Event::Closed)
 			{
 				renderer.GetDisplay()->close();
-				renderer.DeleteRenderer();
-				terrainManager.DeleteTerrainManager();
-				closed = true;
+				renderer.DeleteRenderer();				
+				playing = false;
 				break;
 			}
 		}
 
-		if(closed)
+		if(!playing)
 		{
 			break;
 		}
 
 		timeManager.EndTimer();
 	}
+
+	Time time = seconds(0.1f);
+	sleep(time);
+
+	terrainManager.DeleteTerrainManager();
 }
 
+void UpdateTerrain(TerrainManager& TerrainManager,bool& Playing)
+{
+	while(Playing)
+	{
+		TerrainManager.Update();
+	}
+}

@@ -3,7 +3,7 @@
 
 TerrainManager::TerrainManager(Player& Player)
 {
-	int loopsXAxis = VideoMode::getDesktopMode().width / (chunkSize * tileSize);
+	int loopsXAxis = VideoMode::getDesktopMode().width / (chunkSize * tileSize) + 1;
 	int loopsYAxis = VideoMode::getDesktopMode().height / (chunkSize * tileSize);
 
 	screenLoops.x = loopsXAxis;
@@ -32,7 +32,6 @@ void TerrainManager::Update()
 	Vector2f playerChunkPosition = Vector2f(playerPosition.x / chunkSize / tileSize,playerPosition.y / chunkSize / tileSize);
 
 	Vector2i startCoord = Vector2i(playerChunkPosition.x - screenLoops.x/2, playerChunkPosition.y - screenLoops.y/2);
-	int chunkGens = 0;
 
 	for(int i = 0; i < screenLoops.y;i++)
 	{

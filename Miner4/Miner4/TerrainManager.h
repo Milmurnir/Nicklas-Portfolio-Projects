@@ -26,8 +26,8 @@ private:
 
 	Player* player;
 
-	int chunkSize = 128;
-	int tileSize = 8;
+	int chunkSize = 64;
+	int tileSize = 16;
 
 	Vector2i screenLoops;
 };
