@@ -11,7 +11,11 @@ class Chunk
 public:
 	Chunk(Vector2i Position,int ChunkSize,int TileSize);
 
-	void Update(Vector2f PlayerPosition,RenderWindow* window);
+	void Update(RenderWindow* window);
+
+	Vector2i GetChunkCord() { return chunkPosition; }
+
+	VertexArray GetChunkVertices() { return chunkVertices; }
 
 	void DeleteChunk();
 

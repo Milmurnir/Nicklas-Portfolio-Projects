@@ -1,34 +1,58 @@
 #include <SFML/Graphics.hpp>
 
 #include "TerrainManager.h"
+#include "TimeManager.h"
+#include "Player.h"
+#include "Renderer.h"
+
 
 using namespace sf;
-
-RenderWindow window(VideoMode(1920, 1080), "Miner");
 
 int main()
 {
 	Event event;
 
-	TerrainManager terrainManager;
+	TimeManager timeManager;
 
-	while (window.isOpen())
+	Player player(timeManager);
+
+	TerrainManager terrainManager(player);
+
+	Renderer renderer(terrainManager);
+
+
+
+	while (renderer.GetDisplay()->isOpen())
 	{
-		window.clear();
+		timeManager.StartTimer();
 
-		terrainManager.Update(&window);
-		//Render here
+		player.Update();
 
-		window.display();
+		terrainManager.Update();
 
+		renderer.Render(player.GetPosition());
 
-		while(window.pollEvent(event))
+		timeManager.PrintFPS();
+		
+		bool closed = false;
+		while(renderer.GetDisplay()->pollEvent(event))
 		{
 			if(event.type == Event::Closed)
 			{
-				window.close();
+				renderer.GetDisplay()->close();
+				renderer.DeleteRenderer();
+				terrainManager.DeleteTerrainManager();
+				closed = true;
+				break;
 			}
 		}
+
+		if(closed)
+		{
+			break;
+		}
+
+		timeManager.EndTimer();
 	}
 }
 

@@ -35,3 +35,8 @@ Tile::Tile(Vector2i Position, int TileSize)
 	vertices.append(v3);
 	vertices.append(v4);
 }
+
+void Tile::DeleteTile()
+{
+
+}

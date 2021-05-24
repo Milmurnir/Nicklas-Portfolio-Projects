@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "Chunk.h"
-
+#include "Player.h"
 #include <vector>
 
 using namespace sf;
@@ -10,21 +10,25 @@ using namespace std;
 class TerrainManager
 {
 public:
-	TerrainManager();
+	TerrainManager(Player& Player);
 
-	void Update(RenderWindow* window);
+	void Update();
 
-	static TerrainManager& GetInstance() { static TerrainManager T; return T; }
+	void DeleteTerrainManager();
 
-	void EditMap(int Direction);
-
-	void AddChunk(Chunk chunk);
+	vector<vector<Chunk*>> GetChunkArray() { return chunkArray; }
 
 private:
 
+	vector<Chunk*> allChunks;
+
 	vector<vector<Chunk*>> chunkArray;
 
-	int chunkSize = 8;
-	int tileSize = 10;
+	Player* player;
+
+	int chunkSize = 128;
+	int tileSize = 8;
+
+	Vector2i screenLoops;
 };
 

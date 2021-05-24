@@ -48,20 +48,15 @@ chunkVertices(Quads,4)
 }
 
 
-void Chunk::Update(Vector2f PlayerPosition,RenderWindow* window)
+void Chunk::Update(RenderWindow* window)
 {
-	float dst = sqrt(pow(PlayerPosition.x - position.x, 2) + pow(PlayerPosition.y - position.y, 2));
+}
 
-	window->draw(chunkVertices);
-
-	if(dst < 500)
+void Chunk::DeleteChunk()
+{
+	for(int i = 0; i < chunkSize * chunkSize;i++)
 	{
-		
-	}
-
-	else
-	{
-		
+		delete(tiles[i]);
 	}
 }
 

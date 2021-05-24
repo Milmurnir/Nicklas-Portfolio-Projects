@@ -10,6 +10,8 @@ public:
 
 	Vertex GetVertex(int Index) { return vertices[Index]; }
 
+	void DeleteTile();
+
 private:
 
 	VertexArray vertices;
