@@ -15,9 +15,12 @@ using namespace sf;
 
 void UpdateTerrain(TerrainManager& TerrainManager, bool& Playing);
 
+void RenderThread(Renderer& Renderer, bool& Playing) { while(Playing)Renderer.HelpRenderer(); }
 
 int main()
 {
+	View view(Vector2f(0,0),Vector2f(1920,1080));
+
 	bool playing = true;
 
 	Event event;
@@ -31,7 +34,11 @@ int main()
 	Renderer renderer(terrainManager);
 
 	thread terrainThread(UpdateTerrain, ref(terrainManager),ref(playing));
+	
 	terrainThread.detach();
+	
+	thread renderThread(RenderThread, ref(renderer),ref(playing));
+	renderThread.detach();
 
 	while (playing)
 	{
@@ -39,8 +46,11 @@ int main()
 
 		player.Update();
 
-		//terrainManager.Update();
+		view.setCenter(player.GetPosition());
 
+		//terrainManager.Update();
+		//renderer.HelpRenderer();
+		renderer.GetDisplay()->setView(view);
 		renderer.Render(player.GetPosition());
 
 		timeManager.PrintFPS();
@@ -50,7 +60,7 @@ int main()
 			if(event.type == Event::Closed)
 			{
 				renderer.GetDisplay()->close();
-				renderer.DeleteRenderer();				
+						
 				playing = false;
 				break;
 			}
@@ -64,9 +74,9 @@ int main()
 		timeManager.EndTimer();
 	}
 
-	Time time = seconds(0.1f);
+	Time time = seconds(0.5f);
 	sleep(time);
-
+	renderer.DeleteRenderer();
 	terrainManager.DeleteTerrainManager();
 }
 

@@ -11,11 +11,13 @@ class Chunk
 public:
 	Chunk(Vector2i Position,int ChunkSize,int TileSize);
 
-	void Update(RenderWindow* window);
+	void Update();
 
 	Vector2i GetChunkCord() { return chunkPosition; }
 
-	VertexArray GetChunkVertices() { return chunkVertices; }
+	Vector2i GetPosition() { return position; }
+
+	VertexArray& GetVertices() { return chunkVertices; }
 
 	void DeleteChunk();
 

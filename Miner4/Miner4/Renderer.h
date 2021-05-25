@@ -16,7 +16,11 @@ public:
 
 	RenderWindow* GetDisplay() { return display; }
 
+	void HelpRenderer();
+
 private:
+
+	VertexArray vertices;
 
 	TerrainManager* terrainManager;
 

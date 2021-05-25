@@ -3,8 +3,8 @@
 
 TerrainManager::TerrainManager(Player& Player)
 {
-	int loopsXAxis = VideoMode::getDesktopMode().width / (chunkSize * tileSize) + 1;
-	int loopsYAxis = VideoMode::getDesktopMode().height / (chunkSize * tileSize);
+	int loopsXAxis = (VideoMode::getDesktopMode().width * 1.2f) / (chunkSize * tileSize) + 1;
+	int loopsYAxis = (VideoMode::getDesktopMode().height * 1.2f) / (chunkSize * tileSize);
 
 	screenLoops.x = loopsXAxis;
 	screenLoops.y = loopsYAxis;
@@ -21,7 +21,7 @@ TerrainManager::TerrainManager(Player& Player)
 			allChunks.push_back(chunk);
 			tempArray.push_back(chunk);
 		}
-		chunkArray.push_back(tempArray);
+		chunkMap.push_back(tempArray);
 	}
 }
 
@@ -42,19 +42,19 @@ void TerrainManager::Update()
 			{
 				if(allChunks[j]->GetChunkCord() == startCoord)
 				{
-					chunkArray[i][o] = allChunks[j];
+					chunkMap[i][o] = allChunks[j];
 					foundChunk = true;
 					break;
 				}
-
-				
 			}
 			if(!foundChunk)
 				{
 				Chunk* chunk = new Chunk(startCoord, chunkSize, tileSize);
-				chunkArray[i][o] = chunk;
+				chunkMap[i][o] = chunk;
 				allChunks.push_back(chunk);
 				}
+
+			chunkMap[i][o]->Update();
 
 			startCoord.x += 1;
 		}

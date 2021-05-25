@@ -19,6 +19,6 @@ private:
 
 	TimeManager* timeManager;
 	Vector2f position;
-	float movementSpeed = 2;
+	float movementSpeed = 0.5f;
 };
 

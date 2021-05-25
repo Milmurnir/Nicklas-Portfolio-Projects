@@ -60,8 +60,9 @@ chunkVertices(Quads,4)
 }
 
 
-void Chunk::Update(RenderWindow* window)
+void Chunk::Update()
 {
+	
 }
 
 void Chunk::DeleteChunk()

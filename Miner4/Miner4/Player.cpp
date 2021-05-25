@@ -5,7 +5,7 @@
 
 Player::Player(TimeManager& TimeManager):
 timeManager(&TimeManager),
-position(500,500)
+position(0,500)
 {
 }
 
