@@ -88,12 +88,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\nickeval\Desktop\Own-Projects\Additional Libraries\SFML\include;C:\Users\nickeval\Desktop\Projects\Additional Libraries\SFML\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\nickeval\Desktop\Own-Projects\Additional Libraries\SFML\include;C:\Users\nickeval\Desktop\Projects\Additional Libraries\SFML\include;C:\Users\Nickliiisen\Desktop\Nicklas-Portfolio-Projects\Racing\Racing\SFML\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\nickeval\Desktop\Own-Projects\Additional Libraries\SFML\lib;C:\Users\nickeval\Desktop\Projects\Additional Libraries\SFML\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Nickliiisen\Desktop\Nicklas-Portfolio-Projects\Racing\Racing\SFML\lib;C:\Users\nickeval\Desktop\Own-Projects\Additional Libraries\SFML\lib;C:\Users\nickeval\Desktop\Projects\Additional Libraries\SFML\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-window-d.lib;sfml-graphics-d.lib;sfml-system-d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

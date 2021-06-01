@@ -2,6 +2,7 @@
 #include <thread>
 #include <functional>
 #include <ctime>
+#include <mutex>
 
 #include "TerrainManager.h"
 #include "TimeManager.h"
@@ -15,7 +16,11 @@ using namespace sf;
 
 void UpdateTerrain(TerrainManager& TerrainManager, bool& Playing);
 
-void RenderThread(Renderer& Renderer, bool& Playing) { while(Playing)Renderer.HelpRenderer(); }
+void RenderThread(Renderer& Renderer, bool& Playing) {
+	while (Playing) {
+		Renderer.DrawTerrain();
+	}
+}
 
 int main()
 {
@@ -25,20 +30,21 @@ int main()
 
 	Event event;
 
+	Mutex mutex;
+
 	TimeManager timeManager;
 
 	Player player(timeManager);
 
-	TerrainManager terrainManager(player);
+	TerrainManager terrainManager(player,mutex);
 
-	Renderer renderer(terrainManager);
+	Renderer renderer(terrainManager,mutex);
 
-	thread terrainThread(UpdateTerrain, ref(terrainManager),ref(playing));
+	//thread terrainThread(UpdateTerrain, ref(terrainManager),ref(playing));
+	//terrainThread.detach();
 	
-	terrainThread.detach();
-	
-	thread renderThread(RenderThread, ref(renderer),ref(playing));
-	renderThread.detach();
+	//thread renderThread(RenderThread, ref(renderer),ref(playing));
+	//renderThread.detach();
 
 	while (playing)
 	{
@@ -48,10 +54,11 @@ int main()
 
 		view.setCenter(player.GetPosition());
 
-		//terrainManager.Update();
+		terrainManager.Update();
 		//renderer.HelpRenderer();
-		renderer.GetDisplay()->setView(view);
+
 		renderer.Render(player.GetPosition());
+		renderer.GetDisplay()->setView(view);
 
 		timeManager.PrintFPS();
 		
@@ -83,7 +90,5 @@ int main()
 void UpdateTerrain(TerrainManager& TerrainManager,bool& Playing)
 {
 	while(Playing)
-	{
-		TerrainManager.Update();
-	}
+	TerrainManager.Update();
 }

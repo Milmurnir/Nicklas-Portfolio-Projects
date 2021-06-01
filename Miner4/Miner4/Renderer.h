@@ -8,7 +8,7 @@ using namespace sf;
 class Renderer
 {
 public:
-	Renderer(TerrainManager& TerrainManager);
+	Renderer(TerrainManager& TerrainManager,Mutex& mutex);
 
 	void DeleteRenderer();
 
@@ -16,14 +16,16 @@ public:
 
 	RenderWindow* GetDisplay() { return display; }
 
-	void HelpRenderer();
+	void DrawTerrain();
 
 private:
+
+	Mutex* mutex;
 
 	VertexArray vertices;
 
 	TerrainManager* terrainManager;
 
 	RenderWindow* display;
-};
 
+};

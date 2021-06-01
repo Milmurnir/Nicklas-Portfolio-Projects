@@ -10,13 +10,11 @@ using namespace std;
 class TerrainManager
 {
 public:
-	TerrainManager(Player& Player);
+	TerrainManager(Player& Player, Mutex& Mutex);
 
 	void Update();
 
 	void DeleteTerrainManager();
-
-	void SortAllChunks();
 
 	vector<vector<Chunk*>> GetChunkMap() { return chunkMap; }
 
@@ -28,8 +26,12 @@ private:
 
 	Player* player;
 
-	int chunkSize = 128;
-	int tileSize = 8;
+	int loadOffset = 6;
+	
+	int tileSize = 16;
+	int chunkSize = 16;
+
+	Mutex* mutex;
 
 	Vector2i screenLoops;
 };

@@ -1,14 +1,15 @@
 #include "Chunk.h"
-#include "TerrainManager.h"
 
 Chunk::Chunk(Vector2i Position, int ChunkSize, int TileSize):
 chunkSize(ChunkSize),
 tileSize(TileSize),
 position(Position),
 chunkPosition(Position),
-chunkVertices(Quads,4)
+chunkVertices(Quads,0),
+totalTiles(chunkSize * chunkSize)
 {
-	tiles = new Tile * [chunkSize * chunkSize];
+	totalTiles = 0;
+	tiles = new Tile* [chunkSize * chunkSize];
 
 	for (int i = 0; i < chunkSize; i++)
 	{
@@ -35,34 +36,66 @@ chunkVertices(Quads,4)
 
 			Vector2i tilePosition = Vector2i(x, y);
 
-			Color color;
+			VertexArray sharedVertices;
 
-			if(chunkPosition.x % 2)
+			if (o != 0)
 			{
-				color = Color::Red;
+				if (o != chunkSize - 1)
+				{
+					{
+						sharedVertices.append(tiles[(i * chunkSize) + o - 1]->GetVertex(1));
+						sharedVertices.append(tiles[(i * chunkSize) + o - 1]->GetVertex(2));
+					}
+				}
 			}
 
-			else
-			{
-				color = Color::Blue;
-			}
-
-			Tile* chunkTile = new Tile(tilePosition, TileSize,color,o);
+			Tile* chunkTile = new Tile(tilePosition, TileSize,sharedVertices);
 
 			tiles[(i * chunkSize) + o] = chunkTile;
-
+			totalTiles++;
 			for (int j = 0; j < 4; j++)
 			{
 				chunkVertices.append(chunkTile->GetVertex(j));
+				totalVertices++;
 			}
 		}
 	}
 }
 
 
-void Chunk::Update()
+void Chunk::Update(Player& Player)
 {
-	
+	for(int i = 0; i < totalTiles;i++)
+	{
+		if(tiles[i] != nullptr)
+		{
+			bool collided = CheckRectCollision(Player.GetPosition(), tiles[i]->GetPosition(), tileSize);
+
+			if (collided)
+			{
+				delete(tiles[i]);
+				tiles[i] = nullptr;
+				RemakeChunk();
+			}
+		}
+	}
+}
+
+void Chunk::RemakeChunk()
+{
+	VertexArray tempVertices(Quads,0);
+	for(int i = 0; i < chunkSize * chunkSize;i++)
+	{
+		if(tiles[i] != nullptr)
+		{
+			for(int o = 0; o < 4; o++)
+			{
+				tempVertices.append(tiles[i]->GetVertex(o));
+			}
+		}
+	}
+	chunkVertices.clear();
+	chunkVertices = tempVertices;
 }
 
 void Chunk::DeleteChunk()
@@ -73,4 +106,15 @@ void Chunk::DeleteChunk()
 	}
 }
 
-
+bool Chunk::CheckRectCollision(Vector2f Pos1,Vector2i Pos2,int Size)
+{
+	if(Pos1.x + Size > Pos2.x && Pos1.x < Pos2.x + Size)
+	{
+		if (Pos1.y + Size > Pos2.y && Pos1.y < Pos2.y + Size)
+		{
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
